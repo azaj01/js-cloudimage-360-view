@@ -81,6 +81,8 @@ export interface Hotspot {
   content?: string;
   data?: PopoverData;
   className?: string;
+  /** Scene ID to navigate to when this hotspot is clicked. Turns the hotspot into a navigation pin. */
+  navigateTo?: string;
 }
 
 /**
@@ -226,6 +228,9 @@ export interface CI360Config {
   onHotspotOpen?: (hotspotId: string) => void;
   onHotspotClose?: (hotspotId: string) => void;
   onProductClick?: (productId: string, hotspotId: string) => void;
+  /** Called when a navigateTo hotspot is activated. When set, the plugin fires this callback
+   *  and skips internal handling, allowing the host application to manage scene switching. */
+  onNavigate?: (targetSceneId: string) => void;
   onError?: (data: ErrorEventData) => void;
 }
 

@@ -10,6 +10,9 @@ import {
 import { renderPopoverContent } from './utils/popover-template';
 import { createPopper } from '@popperjs/core';
 
+const NAVIGATE_ICON =
+  '<svg class="ci360-navigate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+
 class Hotspot {
   /**
    * @param {Array} hotspotsConfig - Hotspot configuration array
@@ -33,6 +36,7 @@ class Hotspot {
     this.onOpen = options.onOpen || null;
     this.onClose = options.onClose || null;
     this.onProductClick = options.onProductClick || null;
+    this.onNavigate = options.onNavigate || null;
 
     const { containerSize } = hotspotsConfig[0];
     this.initialContainerSize = containerSize || [container.offsetWidth, container.offsetHeight];
@@ -212,10 +216,72 @@ class Hotspot {
   }
 
   createHotspot(hotspot) {
-    const { id, keepOpen, onClick, label, markerStyle } = hotspot;
+    const { id, keepOpen, onClick, label, markerStyle, navigateTo: rawNavigateTo } = hotspot;
+    const navigateTo = typeof rawNavigateTo === 'string' ? rawNavigateTo.trim() : undefined;
     const content = renderPopoverContent(hotspot);
     const hotspotElement = createHotspotElement(id, label, markerStyle);
 
+    // Navigation hotspot — styled as a navigate pin
+    if (navigateTo) {
+      hotspotElement.classList.add('cloudimage-360-hotspot--navigate');
+      hotspotElement.innerHTML = NAVIGATE_ICON;
+      const sceneLabel = label || navigateTo;
+      hotspotElement.setAttribute('role', 'button');
+      hotspotElement.setAttribute('aria-label', `Navigate to ${sceneLabel}`);
+      hotspotElement.setAttribute('aria-roledescription', 'navigation hotspot');
+      hotspotElement.style.cursor = 'pointer';
+
+      // Hover: show popover with destination info (if has content/data)
+      const navContent = content || (label ? renderPopoverContent({ data: { title: label } }) : '');
+      if (navContent) {
+        hotspotElement.setAttribute('aria-haspopup', 'true');
+        hotspotElement.addEventListener('mouseenter', () =>
+          this.showPopper({ hotspotElement, content: navContent, id, keepOpen: false })
+        );
+        hotspotElement.addEventListener('mouseleave', () => {
+          this.shouldHidePopper = true;
+          this.checkAndHidePopper();
+        });
+        hotspotElement.addEventListener('focus', () =>
+          this.showPopper({ hotspotElement, content: navContent, id, keepOpen: false })
+        );
+        hotspotElement.addEventListener('blur', () => {
+          this.shouldHidePopper = true;
+          this.checkAndHidePopper();
+        });
+      } else {
+        hotspotElement.removeAttribute('aria-haspopup');
+        hotspotElement.removeAttribute('aria-expanded');
+      }
+
+      const handleNavigate = () => {
+        this.hidePopper();
+        if (this.onNavigate) {
+          this.onNavigate(navigateTo);
+        } else {
+          console.warn(`[ci360] navigateTo hotspot "${id}" clicked but no onNavigate callback is configured.`);
+        }
+      };
+
+      // Click: navigate
+      hotspotElement.onclick = (event) => {
+        event.stopPropagation();
+        handleNavigate();
+      };
+
+      // Keyboard: Enter/Space navigates
+      hotspotElement.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleNavigate();
+        }
+      });
+
+      this.hotspotsContainer.appendChild(hotspotElement);
+      return;
+    }
+
+    // Regular (product) hotspot — existing behavior
     if (onClick || (content && this.trigger === 'click')) {
       hotspotElement.style.cursor = 'pointer';
     }
@@ -299,7 +365,7 @@ class Hotspot {
    */
   showHotspotById(hotspotId) {
     const hotspotConfig = this.hotspotsConfig.find((h) => h.id === hotspotId);
-    if (!hotspotConfig) return;
+    if (!hotspotConfig || hotspotConfig.navigateTo) return;
 
     const content = renderPopoverContent(hotspotConfig);
     if (!content) return;

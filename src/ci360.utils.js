@@ -70,6 +70,7 @@ const DEFAULTS_VALUES = {
   onHotspotOpen: null,
   onHotspotClose: null,
   onProductClick: null,
+  onNavigate: null,
   onError: null,
 };
 
@@ -249,6 +250,7 @@ const adaptConfig = (config) => {
     onHotspotOpen: config.onHotspotOpen ?? DEFAULTS_VALUES.onHotspotOpen,
     onHotspotClose: config.onHotspotClose ?? DEFAULTS_VALUES.onHotspotClose,
     onProductClick: config.onProductClick ?? DEFAULTS_VALUES.onProductClick,
+    onNavigate: config.onNavigate ?? DEFAULTS_VALUES.onNavigate,
     onError: config.onError ?? DEFAULTS_VALUES.onError,
   };
 };

@@ -114,6 +114,34 @@
   pointer-events: none;
 }
 
+/* ---- Navigation hotspot marker ---- */
+
+.cloudimage-360-hotspot--navigate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ci360-hotspot-navigate-bg, #6366f1);
+  border-color: var(--ci360-hotspot-navigate-border-color, rgba(255, 255, 255, 0.9));
+}
+
+.ci360-navigate-icon {
+  width: 14px;
+  height: 14px;
+  color: #fff;
+  pointer-events: none;
+}
+
+/* Navigate markers don't need the breathe animation — the arrow is enough */
+.cloudimage-360-hotspot--navigate.cloudimage-360-hotspot--pulse {
+  animation: none;
+}
+
+.cloudimage-360-hotspot--navigate:hover,
+.cloudimage-360-hotspot--navigate:focus-visible {
+  transform: translate(-50%, -50%) scale(1.15);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+}
+
 /* ---- Hover states ---- */
 
 /* No scale on hover for dot-label — only enhance the dot shadow */

@@ -852,6 +852,7 @@ class CI360Viewer {
         onOpen: this.onHotspotOpen,
         onClose: this.onHotspotClose,
         onProductClick: this.onProductClick,
+        onNavigate: this.onNavigate,
       });
       this.addHotspotTimeline();
 
@@ -1584,6 +1585,7 @@ class CI360Viewer {
       onHotspotOpen,
       onHotspotClose,
       onProductClick,
+      onNavigate,
       onError,
     } = adaptedConfig;
 
@@ -1637,6 +1639,7 @@ class CI360Viewer {
     this.onHotspotOpen = onHotspotOpen;
     this.onHotspotClose = onHotspotClose;
     this.onProductClick = onProductClick;
+    this.onNavigate = onNavigate;
     this.hide360Logo = hide360Logo;
     this.logoSrc = logoSrc;
     this.inertia = inertia;

@@ -68,6 +68,8 @@ declare module CI360 {
     onHotspotOpen?: (hotspotId: string) => void;
     onHotspotClose?: (hotspotId: string) => void;
     onProductClick?: (productId: string, hotspotId: string) => void;
+    /** Called when a navigateTo hotspot is activated. Delegates scene switching to the host. */
+    onNavigate?: (targetSceneId: string) => void;
     onError?: (data: { viewerId: string; error: { message: string; url?: string }; errorCount: number; totalImages: number; errors: Array<{ message: string; url?: string }> }) => void;
   }
 

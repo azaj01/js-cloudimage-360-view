@@ -922,8 +922,10 @@ class ss {
   _onWheel(t) {
     if (!t.ctrlKey && !t.metaKey) return;
     t.preventDefault();
-    const i = t.deltaY > 0 ? -1 : 1, o = this.zoom + i * this.zoomStep;
-    this._zoomTowardPoint(o, t.clientX, t.clientY);
+    let i = -t.deltaY;
+    t.deltaMode === 1 && (i *= 40), t.deltaMode === 2 && (i *= 800);
+    const o = Math.pow(2, i / 300), s = this.zoom * o;
+    this._zoomTowardPoint(s, t.clientX, t.clientY);
   }
   // --- Double-click toggle ---
   _onDblClick(t) {
@@ -3452,4 +3454,4 @@ class Rn {
 export {
   Rn as default
 };
-//# sourceMappingURL=ci360-CQdkTo_X.mjs.map
+//# sourceMappingURL=ci360-BIUqYgNS.mjs.map

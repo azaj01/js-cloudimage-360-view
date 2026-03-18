@@ -29,6 +29,33 @@ Types of changes:
 
 ---
 
+## 4.9.0 - 2026-03-18
+
+### Added
+
+- 2D Grid mode (`filenameGrid`, `imageListGrid`) for true two-axis product viewing where both X and Y axes are always active simultaneously
+- Per-axis edge stopping (`stopAtEdgesX`, `stopAtEdgesY`) to control looping independently per axis
+- Grid-aware autoplay behaviors: `spin-xy` (row-scan) and `spin-yx` (column-scan)
+- Grid support for hotspots, timeline, `animateToFrame`, zoom, and resize
+- Grid mode props in React component, `useCI360` hook, and TypeScript types
+- 2D Grid lamp demo to the demo page with View/Code tabs
+- `isGridMode` to `SpinEventData` and `CI360ViewerInstance` types
+- `imagesGrid` to `LoadEventData` type
+
+### Fixed
+
+- Trackpad zoom being too aggressive and causing position jumps (now uses proportional exponential scaling)
+- Zoom controls separator now uses a dedicated element instead of `border-left` on the reset button (fixes border-radius artifact)
+- `clearTimeout` → `clearInterval` for autoplay stop
+- `update()` now properly cleans up hotspots, timeline, and hints before re-creating
+- `destroy()` now resets `isReady` and `isGridMode`
+- `ResizeObserver` now respects current orientation in non-grid mode
+- Non-grid `calculatePercentage` sparse array counting
+- Validation no longer warns incorrectly when using grid-only config
+- `onNavigate` missing from React component props and `useCI360` hook deps
+
+---
+
 ## 4.8.0 - 2026-03-13
 
 ### Added

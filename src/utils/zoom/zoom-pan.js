@@ -149,9 +149,16 @@ export class ZoomPan {
 
     event.preventDefault();
 
-    // deltaY > 0 = scroll down = zoom out; deltaY < 0 = scroll up = zoom in
-    const direction = event.deltaY > 0 ? -1 : 1;
-    const newZoom = this.zoom + direction * this.zoomStep;
+    // Normalize deltaY across browsers and input devices.
+    // Trackpad pinch-zoom (reported as Ctrl+wheel) sends small deltaY values (1-10),
+    // while mouse scroll wheels send larger values (100-120).
+    // Using exponential scaling gives smooth, proportional zooming for both.
+    let delta = -event.deltaY;
+    if (event.deltaMode === 1) delta *= 40;  // DOM_DELTA_LINE -> pixels
+    if (event.deltaMode === 2) delta *= 800; // DOM_DELTA_PAGE -> pixels
+
+    const zoomFactor = Math.pow(2, delta / 300);
+    const newZoom = this.zoom * zoomFactor;
 
     // Calculate zoom target point relative to canvas
     this._zoomTowardPoint(newZoom, event.clientX, event.clientY);

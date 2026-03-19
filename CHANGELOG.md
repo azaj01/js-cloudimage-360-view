@@ -29,6 +29,15 @@ Types of changes:
 
 ---
 
+## 4.9.1 - 2026-03-19
+
+### Fixed
+
+- `buildCdnUrl` crashing on relative folder paths when using `ciToken` with `filenameGrid`
+- Grid demo now uses `filenameGrid` with Cloudimage CDN for automatic responsive resizing
+
+---
+
 ## 4.9.0 - 2026-03-18
 
 ### Added

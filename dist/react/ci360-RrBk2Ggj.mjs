@@ -325,7 +325,13 @@ const Ee = /* @__PURE__ */ Li(Ki), S = {
 }, ft = (e, t) => A(e, t, null) === "false", ho = (e = 1) => {
   const t = Math.round(window.devicePixelRatio || 1);
   return parseInt(e) * t;
-}, co = (e, t, i) => new URL(e).origin.includes("cloudimg") ? e : `https://${t}.cloudimg.io/${i}${e}`, ke = (e, t) => e ? `ar=${e}&gravity=${t || "auto"}` : "", uo = ({ ciTransformation: e, responsiveWidth: t, ciFilters: i }) => {
+}, co = (e, t, i) => {
+  try {
+    if (new URL(e).origin.includes("cloudimg")) return e;
+  } catch {
+  }
+  return `https://${t}.cloudimg.io/${i}${e}`;
+}, ke = (e, t) => e ? `ar=${e}&gravity=${t || "auto"}` : "", uo = ({ ciTransformation: e, responsiveWidth: t, ciFilters: i }) => {
   const o = `width=${t}`, s = e || o, n = i ? `&f=${i}` : "";
   return `${s}${n}`;
 }, at = (e, t) => {
@@ -3454,4 +3460,4 @@ class Rn {
 export {
   Rn as default
 };
-//# sourceMappingURL=ci360-BIUqYgNS.mjs.map
+//# sourceMappingURL=ci360-RrBk2Ggj.mjs.map

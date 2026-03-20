@@ -8,7 +8,8 @@ const buildCdnUrl = (src, ciToken, finalApiVersion) => {
   } catch {
     // Relative path — not a cloudimg URL, build the CDN URL
   }
-  return `https://${ciToken}.cloudimg.io/${finalApiVersion}${src}`;
+  const normalizedSrc = src.startsWith('/') ? src.slice(1) : src;
+  return `https://${ciToken}.cloudimg.io/${finalApiVersion}${normalizedSrc}`;
 };
 
 const buildCropParams = (cropAspectRatio, cropGravity) =>

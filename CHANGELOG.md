@@ -29,6 +29,15 @@ Types of changes:
 
 ---
 
+## 4.9.5 - 2026-03-22
+
+### Added
+
+- `initOnClick` property (`data-init-on-click`) — defers image loading until the user clicks on the viewer, showing a first-frame preview with a click overlay. Useful for pages with multiple 360 viewers in a grid
+- Inner dot styling for product (non-navigation) hotspot markers
+
+---
+
 ## 4.9.4 - 2026-03-21
 
 ### Added
